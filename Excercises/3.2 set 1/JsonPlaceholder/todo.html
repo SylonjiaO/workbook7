@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <ul>
+          <li><a href="./index.html">Home</a></li>
+          <li><a href="./todo.html">Todos</a></li>
+          <li><a href="./users.html">User Information</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <input type="number" name="toDoListInput" id="toDoListInput" min="1" max="200" />
+      <button id="getStatusButton" type="button">Get Status</button>
+      <div id="toDoInformation">
+        <h3></h3>
+        <h4></h4>
+      </div>
+      <pre id="preformattedBlock">
+
+    </pre>
+    </main>
+    <script>
+    window.onload = () =>{
+        getTask();
+        const getStatusButton = document.getElementById("getStatusButton")
+        getStatusButton.onclick = getTask;
+        toDoListInput.onchange = getTask;
+    }
+
+    const toDoListInput = document.querySelector("#toDoListInput");
+
+    function getTask(){
+        const taskID = toDoListInput.value;
+        document.querySelector("#toDoInformation h3").innerText = "Loading...";
+        document.querySelector("#toDoInformation h4").innerText = " ";
+
+        fetch(" https://jsonplaceholder.typicode.com/todos/" + taskID)
+        .then(response => response.json())
+        .then((task) => {
+            if(task){
+            document.querySelector("#toDoInformation h3").innerText = "Answerable To: " + task.userId;
+            document.querySelector("#toDoInformation h4").innerText ="Task: " + task.title;
+            }
+            console.log(task);
+        });
+    }  
+    </script>
+  </body>
+</html>

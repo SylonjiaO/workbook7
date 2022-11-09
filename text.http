@@ -1,0 +1,6 @@
+### GET USER5
+GET https://jsonplaceholder.typicode.com/users/5
+### GET USERS
+GET https://jsonplaceholder.typicode.com/users
+### GET todos
+GET  https://jsonplaceholder.typicode.com/todos/
