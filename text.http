@@ -5,5 +5,9 @@ GET https://jsonplaceholder.typicode.com/users
 ### GET todos
 GET  https://jsonplaceholder.typicode.com/todos/
 
-### GET todos
+### GET catagory
 GET  http://localhost:8081/api/categories
+
+
+### GET products
+GET  http://localhost:8081/api/products

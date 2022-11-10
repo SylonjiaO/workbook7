@@ -1,12 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-    
-</body>
+  </head>
+  <body>
+    <main>
+      <div id="productDetails">
+        <h2>Product Name</h2>
+        <h3>Price:</h3>
+        <h3>Category:</h3>
+        <h3>Supplier:</h3>
+        <h3>Unit Stock:</h3>
+        <h3>Discountinued:</h3>
+        <h3>SKU:</h3>
+      </div>
+    </main>
+  </body>
+  <script>
+    function getProductId(){
+        let parameters = new URLSearchParams(location.search);
+        return parameters.get("id")
+    }
+    function loadProduct(productId){
+        return fetch(`http://localhost:8081/api/products/${productId}`).then((response) => response.json())
+    }
+
+    function fillProductData(product){
+        const productTags = document.querySelectorAll("h3");
+        productTags[0].innerText = product.unitPrice;
+        productTags[1].innerText = product.unitsInStock;
+        productTags[2].innerText = product.categoryId;
+        productTags[3].innerText = product.supplier;
+        productTags[4].innerText = product.discontinued;
+        productTags[5].innerText = product.productId;
+    }
+
+    window.onload = () => {
+       loadProduct(getProductId()).then(product => fillProductData(product));
+    }
+        </script>
 </html>

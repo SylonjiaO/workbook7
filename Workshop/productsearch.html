@@ -8,49 +8,119 @@
   </head>
   <body>
     <main>
-      <select name="productDropDown" id="productDropDown">
+
+        <select name="options" id="options" onchange="viewOptionsChanged(event)">
+            <option value="">Select One</option>
+            <option value="category">View by Category</option>
+            <option value="all">View All</option>
+
+        </select>
+      <select
+        name="categoryDropDown"
+        id="categoryDropDown"
+        onchange="onSelectCategory(event)"
+      >
         <option value="">Select</option>
       </select>
 
       <table id="productTable">
         <thead>
           <tr>
-            <th>Product Type</th>
-            <th>Product Description</th>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Product Price</th>
+            <th>Product Details</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
     </main>
     <script>
-        'use strict'
+      "use strict";
 
-        function loadTableBody() {
-            const tbody = document.querySelector("#productTable tbody");
-            
-            fetch("http://localhost:8081/api/categories")
-            .then(response => response.json())
-               .then((categories) => {
-                categories.forEach((category) => {
-                let row = tbody.insertRow(-1)
-                let cell1 = row.insertCell(0)
-                let cell2 = row.insertCell(1)
-                let a = document.createElement('a');
-                a.innerText = category.name;
-                a.href = `./productdetails.html?name=${category.name}`;
-                a.target = ("self");
-                cell1.appendChild(a);
-                cell2.innerText = category.description;
+      function fetchCategories() {
+        return fetch("http://localhost:8081/api/categories").then((response) =>
+          response.json()
+        );
+      }
 
-                
-            });
-         });
+      function fetchProducts() {
+        return fetch("http://localhost:8081/api/products").then((response) =>
+          response.json()
+        );
+      }
 
+      function fillCategoryDropDownList(categories) {
+        const categoryDropDown = document.getElementById("categoryDropDown");
+        for (const category of categories) {
+          const option = document.createElement("option");
+          option.value = category.categoryId;
+          option.innerText = category.name;
+         
+
+          categoryDropDown.appendChild(option);
         }
-     
-        window.onload = () => {
-            loadTableBody();
+      }
+
+      function onSelectCategory(event) {
+        let selectedVal = event.target.value;
+        console.log(selectedVal);
+        fetchProducts().then((products) => {
+          let filteredProducts = products.filter((product) => {
+            return product.categoryId === Number(selectedVal);
+          });
+          fillTableBody(filteredProducts);
+        });
+      }
+
+      function fillTableBody(products) {
+        const tbody = document.querySelector("#productTable tbody");
+
+        let rows = tbody.rows;
+        for (let i = rows.length - 1; i > 0; i--) {
+        tbody.deleteRow(i);
+    }
+    products.forEach((product) => {
+          let row = tbody.insertRow(-1);
+          let cell1 = row.insertCell(0);
+          let cell2 = row.insertCell(1);
+          let cell3 = row.insertCell(2);
+          let cell4 = row.insertCell(3);
+
+          cell1.innerText = product.productId;
+          cell2.innerText = product.productName;
+          cell3.innerText = product.unitPrice;
+          let a = document.createElement("a");
+          a.innerText = `See Details`;
+          a.href = `./productdetails.html?id=${product.categoryId}`;
+          a.target = "self";
+          cell4.appendChild(a);
+          
+        });
+      }
+
+      function viewOptionsChanged(event){
+       let selectedVal = event.target.value 
+       if (selectedVal === "all"){
+        document.getElementById("categoryDropDown").style.display = 'none';
+        fetchAllProducts()}
+       else if(selectedVal === "category"){
+        document.getElementById("categoryDropDown").style.display = 'block';
+       }
+       else{
+        document.getElementById("categoryDropDown").style.display = 'none';
+       }
+      }
+
+        function fetchAllProducts(){
+            fetchProducts().then(fillTableBody)
         }
+
+      window.onload = () => {
+        fetchCategories().then(fillCategoryDropDownList);
+       
+        
+      };
     </script>
   </body>
 </html>
