@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <main>
+      <select name="productDropDown" id="productDropDown">
+        <option value="">Select</option>
+      </select>
+
+      <table id="productTable">
+        <thead>
+          <tr>
+            <th>Product Type</th>
+            <th>Product Description</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </main>
+    <script>
+        'use strict'
+
+        function loadTableBody() {
+            const tbody = document.querySelector("#productTable tbody");
+            
+            fetch("http://localhost:8081/api/categories")
+            .then(response => response.json())
+               .then((categories) => {
+                categories.forEach((category) => {
+                let row = tbody.insertRow(-1)
+                let cell1 = row.insertCell(0)
+                let cell2 = row.insertCell(1)
+                let a = document.createElement('a');
+                a.innerText = category.name;
+                a.href = `./productdetails.html?name=${category.name}`;
+                a.target = ("self");
+                cell1.appendChild(a);
+                cell2.innerText = category.description;
+
+                
+            });
+         });
+
+        }
+     
+        window.onload = () => {
+            loadTableBody();
+        }
+    </script>
+  </body>
+</html>

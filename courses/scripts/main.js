@@ -18,7 +18,7 @@ function loadTableBody(){
                 let a = document.createElement('a');
                 a.innerText = course.courseName;
                 a.href = `./details.html?courseNum=${course.courseNum}`;
-                a.target = ("self")
+                a.target = ("self");
                 cell3.appendChild(a);
 
        });

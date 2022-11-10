@@ -4,3 +4,6 @@ GET https://jsonplaceholder.typicode.com/users/5
 GET https://jsonplaceholder.typicode.com/users
 ### GET todos
 GET  https://jsonplaceholder.typicode.com/todos/
+
+### GET todos
+GET  http://localhost:8081/api/categories
