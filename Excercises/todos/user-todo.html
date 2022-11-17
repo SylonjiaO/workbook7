@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDo</title>
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css">
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+
+<body>
+
+
+
+    <main>
+        <h1>todo</h1>
+        <form>
+            <label for="todoId">ID</label>
+            <input type="text" id="todoId" placeholder="id">
+            <button type="submit">Get</button>
+        </form>
+
+        <div id="todo-card">
+            <span></span>
+            <p></p>
+        </div>
+    </main>
+
+
+
+
+    <script>
+        window.onload = () => {
+            const $q = (selector) => document.querySelector(selector)
+
+
+            function onFormSubmit(event) {
+                event.preventDefault();
+                const id = $q("#todoId").value;
+                loadTodo(id);
+            }
+
+
+            function loadTodo(todoId) {
+                const completedSpan = $q("#todo-card span");
+                const titleParagraph = $q("#todo-card p");
+
+                fetch(`http://localhost:8888/todos/${todoId}`).then(response => response.json()).then(data => {
+                    console.log(data);
+                    completedSpan.innerText = data.completed;
+                    titleParagraph.innerText = data.title;
+                })
+
+            }
+
+
+            const form = $q("form");
+            form.onsubmit = onFormSubmit;
+        }
+
+
+    </script>
+</body>
+
+
+
+</html>

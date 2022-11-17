@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css"> 
     <title>Document</title>
   </head>
   <body>
@@ -104,12 +105,12 @@
        if (selectedVal === "all"){
         document.getElementById("categoryDropDown").style.display = 'none';
         fetchAllProducts()}
-       else if(selectedVal === "category"){
+       else if (selectedVal === "category") {
         document.getElementById("categoryDropDown").style.display = 'block';
-       }
-       else{
+       }else{
         document.getElementById("categoryDropDown").style.display = 'none';
        }
+       
       }
 
         function fetchAllProducts(){
@@ -118,6 +119,7 @@
 
       window.onload = () => {
         fetchCategories().then(fillCategoryDropDownList);
+       
        
         
       };

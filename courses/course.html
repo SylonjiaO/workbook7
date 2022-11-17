@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/papercss@1.8.3/dist/paper.min.css">
+    <title>Courses Page</title>
+  </head>
+  <body>
+<main>
+    <h1>Courses</h1>
+        <div class="menu-bar"><a href="./newcourses.html">&#43; Add</a></div>
+    <select
+      name="options"
+      id="viewDropDown"
+      onchange="viewCoursesChange(event)"
+    >
+      <option value="">Select View</option>
+      <!-- <option value="dept">View by Dept</option> -->
+      <option value="all">View All</option>
+    </select>
+    <!-- <select
+      name="deptDropDown"
+      id="deptDropDown"
+      onchange="onSelectDept(event)"
+    >
+      <option value="">Select</option>
+    </select> -->
+    <div class="table-responsive">
+      <table class="table table-primary" id="courseTable">
+        <thead>
+          <tr>
+            <th scope="col">Course Name</th>
+            <th scope="col">Department</th>
+            <th scope="col">Instructor</th>
+            <th scope="col">Start Date</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+</main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <script>
+              "use strict";
+
+              function fetchDept(){
+                  return fetch("http://localhost:8888/courses").then((response)=> response.json());
+      }
+
+    // function fillDeptDropDownList(depts){
+    //     const $q = (selector) => document.querySelector(selector);
+    //     const deptDropDown = $q("#deptDropDown");
+    //     depts.forEach(dept => {
+    //         const option = document.createElement("option");
+    //         option.innerText= dept.dept;
+    //         option.value= dept.dept;
+
+            
+            
+    //         deptDropDown.appendChild(option);
+    //     });
+
+    // }
+
+    // function onSelectDept(event){
+    //     let selectedValue = event.target.value;
+    //     fetchDept().then((depts) => {
+    //         let filteredDepts = depts.filter((dept) => {
+    //         return dept.id === Number(selectedValue);
+    //         });
+    //        fillTableBody(filteredDepts); 
+    //     });
+    // }
+
+    function fillTableBody(courses){
+        const tbody = document.querySelector("#courseTable tbody");
+
+        let rows = tbody.rows;
+        for (let i = rows.length - 1; i > 0; i--) {
+        tbody.deleteRow(i);
+    }
+     courses.forEach((course) => {
+          let row = tbody.insertRow(-1);
+          let cell1 = row.insertCell(0);
+          let cell2 = row.insertCell(1);
+          let cell3 = row.insertCell(2);
+          let cell4 = row.insertCell(3);
+          let cell5 = row.insertCell(4);
+
+          cell2.innerText = course.dept;
+          cell1.innerText = course.courseName;
+          cell3.innerText = course.instructor;
+          cell4.innerText = course.startDate
+          let a = document.createElement("a");
+          let a2 = document.createElement("a");
+          a2.innerText = "/Delete";
+          a2.href = `./delete-course.html?id=${course.id}`;
+          a2.target = "self";
+          a.innerText = "Edit";
+          a.href = `./edit-course.html?id=${course.id}`;
+          a.target = "self";
+          cell5.appendChild(a);
+          cell5.appendChild(a2);
+          
+        });
+    }
+
+    // function viewCoursesChange(event){
+    //    let selectedVal = event.target.value 
+    //    if (selectedVal === "all"){
+    //     document.getElementById("deptDropDown").style.display = 'none';
+    //     fetchAllProducts()}
+    //    else if (selectedVal === "category") {
+    //     document.getElementById("deptDropDown").style.display = 'none';
+    //    }else{
+    //     document.getElementById("deptDropDown").style.display = 'none';
+    //    }
+       
+    //   }
+
+    
+
+      window.onload = () => {
+        // fetchDept().then(fillDeptDropDownList);
+        fetchDept().then(fillTableBody)
+       
+        
+      };
+    </script>
+  </body>
+</html>
