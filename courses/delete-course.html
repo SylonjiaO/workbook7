@@ -1,12 +1,75 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete Course</title>
-</head>
-<body>
-    \
-</body>
-</html>
+    <!DOCTYPE html>
+    <html lang="en">
+    
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Delete Course</title>
+        <link rel="stylesheet" href="https://unpkg.com/mvp.css@1.12/mvp.css">
+    </head>
+    
+    <body>
+    
+        <main>
+            <h2>Delete</h2>
+            <form>
+                <p>Are you sure you want to delete the course:</p>
+                <div id="titleDiv"></div>
+                <div>
+                    <button>Confirm Delete</button>
+                    <a href="./course.html">cancel</a>
+                </div>
+            </form>
+        </main>
+        <script>
+            (function () {
+                //selector HTMLElements into variables
+                const $q = (selector) => document.querySelector(selector);
+    
+                const form = $q("form");
+                const titleDiv = $q("#titleDiv");
+    
+                function deleteCourse(event) {
+                    event.preventDefault();
+                    const id = getCourseId();
+    
+                    fetch("http://localhost:8888/courses/" + id, {
+                        method: "DELETE",
+                    })
+                        .then(() => {
+                            window.location = "./course.html"
+                        })
+                        .catch(error => {
+                            console.log(error)
+                            messageParagraph.innerText = "An unexpected error occured."
+                        });
+    
+                }
+    
+                function loadCourse(id) {
+                    fetch(`http://localhost:8888/courses/${id}`).then(response => response.json()).then(course => {
+                        titleDiv.innerText = course.courseName;
+                    })
+    
+                }
+    
+                function getCourseId() {
+                    const params = new URLSearchParams(location.search);
+                    return params.get("id");
+                }
+    
+    
+                //associate functions with HTMLElement events
+                window.onload = function () {
+                    loadCourse(loadCourse());
+                    form.onsubmit = deleteCourse;
+                }
+    
+            })()
+        </script>
+    
+    </body>
+    
+    </html>
+
